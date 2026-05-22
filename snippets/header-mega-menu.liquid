@@ -307,10 +307,10 @@
       if (!btn) return;
 
       /* Click toggle */
-      /* Click — follow the link if top-level item has a URL, otherwise toggle */
-btn.addEventListener('click', function (e) {
-  e.stopPropagation();
-});
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        item.classList.contains('is-open') ? closePanel(item) : openPanel(item);
+      });
 
       /* Hover open */
       item.addEventListener('mouseenter', function () { openPanel(item); });
