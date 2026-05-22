@@ -1,33 +1,28 @@
 {% comment %}
   Renders a mega menu for the header (Trade theme).
   Place this file at: snippets/header-mega-menu.liquid
-
-  Usage (already in header.liquid):
-    render 'header-mega-menu'
+  Pure CSS hover — no JS flickering.
 {% endcomment %}
 
 <style>
-  /* ── Mega Menu Nav ── */
   .header__inline-menu {
     display: flex;
     align-items: center;
   }
 
-  .mega-menu-nav {
+  .mega-nav {
     display: flex;
     align-items: center;
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 0;
   }
 
-  /* ── Top-level items ── */
-  .mega-menu-nav__item {
+  .mega-nav__item {
     position: static;
   }
 
-  .mega-menu-nav__link {
+  .mega-nav__top-link {
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -37,51 +32,51 @@
     text-decoration: none;
     color: currentColor;
     white-space: nowrap;
-    transition: opacity 0.2s ease;
-    cursor: pointer;
     background: none;
     border: none;
     font-family: inherit;
     letter-spacing: 0.03em;
+    cursor: pointer;
+    line-height: 1;
   }
 
-  .mega-menu-nav__link:hover {
-    opacity: 0.65;
-  }
-
-  .mega-menu-nav__link .icon-caret {
+  .mega-nav__top-link svg {
     width: 1rem;
     height: 1rem;
-    transition: transform 0.25s ease;
+    transition: transform 0.2s ease;
     flex-shrink: 0;
   }
 
-  /* ── Mega panel ── */
-  .mega-menu__panel {
-    display: none;
+  /* Panel hidden by default */
+  .mega-nav__panel {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
     width: 100%;
-    z-index: 100;
+    z-index: 200;
     background-color: rgb(var(--color-background));
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
     border-top: 1px solid rgba(var(--color-foreground), 0.08);
     padding: 3.2rem 0;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
   }
 
-  .mega-menu__panel.is-open {
-    display: block;
-    animation: megaFadeIn 0.2s ease;
+  /* Open on hover of the LI */
+  .mega-nav__item:hover .mega-nav__panel {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  @keyframes megaFadeIn {
-    from { opacity: 0; transform: translateY(-6px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .mega-nav__item:hover .mega-nav__top-link svg {
+    transform: rotate(180deg);
   }
 
-  .mega-menu__inner {
+  .mega-nav__inner {
     max-width: var(--page-width, 1200px);
     margin: 0 auto;
     padding: 0 3rem;
@@ -90,15 +85,13 @@
     gap: 1.6rem 3.2rem;
   }
 
-  /* ── Column ── */
-  .mega-menu__column {
+  .mega-nav__column {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
   }
 
-  /* Column heading (level-2 link) */
-  .mega-menu__heading {
+  .mega-nav__col-heading {
     font-size: 1.3rem;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -107,109 +100,62 @@
     color: currentColor;
     padding-bottom: 0.8rem;
     border-bottom: 1px solid rgba(var(--color-foreground), 0.12);
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.2rem;
     display: block;
-    transition: opacity 0.2s;
+    transition: opacity 0.15s;
   }
+  .mega-nav__col-heading:hover { opacity: 0.6; }
 
-  .mega-menu__heading:hover {
-    opacity: 0.6;
-  }
-
-  /* Level-3 links */
-  .mega-menu__sublist {
+  .mega-nav__sublist {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
   }
 
-  .mega-menu__sublink {
+  .mega-nav__sublink {
     font-size: 1.4rem;
     text-decoration: none;
     color: currentColor;
     padding: 0.35rem 0;
-    opacity: 0.75;
-    transition: opacity 0.2s;
+    opacity: 0.72;
     display: block;
+    transition: opacity 0.15s;
   }
+  .mega-nav__sublink:hover,
+  .mega-nav__sublink--active { opacity: 1; }
 
-  .mega-menu__sublink:hover {
-    opacity: 1;
-  }
-
-  .mega-menu__sublink--active {
-    font-weight: 600;
-    opacity: 1;
-  }
-
-  /* Simple dropdown (no children) */
-  .mega-menu__simple-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .mega-menu__simple-link {
-    font-size: 1.4rem;
-    text-decoration: none;
-    color: currentColor;
-    padding: 0.4rem 0;
-    opacity: 0.8;
-    transition: opacity 0.2s;
-    display: block;
-  }
-
-  .mega-menu__simple-link:hover {
-    opacity: 1;
-  }
-
-  /* ── Backdrop overlay ── */
-  .mega-menu__backdrop {
-    display: none;
+  /* Backdrop */
+  .mega-nav__backdrop {
+    visibility: hidden;
+    opacity: 0;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.35);
-    z-index: 99;
+    background: rgba(0,0,0,0.32);
+    z-index: 199;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+    pointer-events: none;
   }
 
-  .mega-menu__backdrop.is-open {
-    display: block;
+  .mega-nav:has(.mega-nav__item:hover) .mega-nav__backdrop {
+    visibility: visible;
+    opacity: 1;
   }
 
-  /* ── Caret rotation when open ── */
-  .mega-menu-nav__item.is-open .mega-menu-nav__link .icon-caret {
-    transform: rotate(180deg);
-  }
-
-  /* ── Hide on mobile (drawer handles it) ── */
   @media screen and (max-width: 989px) {
-    .header__inline-menu {
-      display: none;
-    }
+    .header__inline-menu { display: none; }
   }
 </style>
 
-<div class="mega-menu__backdrop" id="MegaMenuBackdrop"></div>
-
 <nav class="header__inline-menu" aria-label="Main menu">
-  <ul class="mega-menu-nav" role="list">
+  <ul class="mega-nav" role="list">
     {%- for link in section.settings.menu.links -%}
-      <li class="mega-menu-nav__item" data-mega-item>
+      <li class="mega-nav__item">
 
         {%- if link.links != blank -%}
-          {%- comment -%} Has children → mega panel {%- endcomment -%}
-          <button
-            class="mega-menu-nav__link"
-            aria-expanded="false"
-            aria-controls="MegaPanel-{{ forloop.index }}"
-            data-mega-trigger
-          >
+
+          <button class="mega-nav__top-link" aria-haspopup="true">
             <span{% if link.child_active %} class="header__active-menu-item"{% endif %}>
               {{- link.title | escape -}}
             </span>
@@ -218,30 +164,25 @@
             </span>
           </button>
 
-          <div
-            id="MegaPanel-{{ forloop.index }}"
-            class="mega-menu__panel"
-            role="region"
-            aria-label="{{ link.title | escape }} menu"
-          >
-            <div class="mega-menu__inner">
+          <div class="mega-nav__panel" role="region" aria-label="{{ link.title | escape }} submenu">
+            <div class="mega-nav__inner">
               {%- for childlink in link.links -%}
-                <div class="mega-menu__column">
+                <div class="mega-nav__column">
                   <a
                     href="{{ childlink.url }}"
-                    class="mega-menu__heading{% if childlink.current %} mega-menu__heading--active{% endif %}"
+                    class="mega-nav__col-heading{% if childlink.current %} mega-nav__col-heading--active{% endif %}"
                     {% if childlink.current %}aria-current="page"{% endif %}
                   >
                     {{- childlink.title | escape -}}
                   </a>
 
                   {%- if childlink.links != blank -%}
-                    <ul class="mega-menu__sublist" role="list">
+                    <ul class="mega-nav__sublist" role="list">
                       {%- for grandchildlink in childlink.links -%}
                         <li>
                           <a
                             href="{{ grandchildlink.url }}"
-                            class="mega-menu__sublink{% if grandchildlink.current %} mega-menu__sublink--active{% endif %}"
+                            class="mega-nav__sublink{% if grandchildlink.current %} mega-nav__sublink--active{% endif %}"
                             {% if grandchildlink.current %}aria-current="page"{% endif %}
                           >
                             {{- grandchildlink.title | escape -}}
@@ -256,85 +197,21 @@
           </div>
 
         {%- else -%}
-          {%- comment -%} No children → simple link {%- endcomment -%}
+
           <a
             href="{{ link.url }}"
-            class="mega-menu-nav__link"
+            class="mega-nav__top-link"
             {% if link.current %}aria-current="page"{% endif %}
           >
             <span{% if link.current %} class="header__active-menu-item"{% endif %}>
               {{- link.title | escape -}}
             </span>
           </a>
-        {%- endif -%}
 
+        {%- endif -%}
       </li>
     {%- endfor -%}
+
+    <li class="mega-nav__backdrop" aria-hidden="true"></li>
   </ul>
 </nav>
-
-<script>
-  (function () {
-    const items    = document.querySelectorAll('[data-mega-item]');
-    const backdrop = document.getElementById('MegaMenuBackdrop');
-    let openItem   = null;
-    let closeTimer = null;
-
-    function openPanel(item) {
-      clearTimeout(closeTimer);
-      if (openItem && openItem !== item) {
-        forceClose(openItem);
-      }
-      const btn   = item.querySelector('[data-mega-trigger]');
-      const panel = item.querySelector('.mega-menu__panel');
-      if (!btn || !panel) return;
-      item.classList.add('is-open');
-      panel.classList.add('is-open');
-      btn.setAttribute('aria-expanded', 'true');
-      backdrop.classList.add('is-open');
-      openItem = item;
-    }
-
-    function forceClose(item) {
-      if (!item) return;
-      const btn   = item.querySelector('[data-mega-trigger]');
-      const panel = item.querySelector('.mega-menu__panel');
-      item.classList.remove('is-open');
-      if (panel) panel.classList.remove('is-open');
-      if (btn)   btn.setAttribute('aria-expanded', 'false');
-      backdrop.classList.remove('is-open');
-      if (openItem === item) openItem = null;
-    }
-
-    function scheduleClose(item) {
-      closeTimer = setTimeout(function () {
-        forceClose(item);
-      }, 120);
-    }
-
-    items.forEach(function (item) {
-      const btn = item.querySelector('[data-mega-trigger]');
-
-      item.addEventListener('mouseenter', function () {
-        openPanel(item);
-      });
-
-      item.addEventListener('mouseleave', function () {
-        scheduleClose(item);
-      });
-
-      /* Keyboard: Escape */
-      if (btn) {
-        btn.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape') { forceClose(item); btn.focus(); }
-        });
-      }
-    });
-
-    /* Backdrop click → close */
-    backdrop.addEventListener('click', function () {
-      if (openItem) forceClose(openItem);
-    });
-
-  })();
-</script>
