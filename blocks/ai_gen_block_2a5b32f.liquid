@@ -1,0 +1,148 @@
+{% doc %}
+  @prompt
+    Create a custom text block for a Shopify theme section that includes a font size setting (range picker) so merchants can control the font size of that specific text block independently from other text blocks in the same section. The block should have a rich text or plain text content field and a font size setting that applies only to that block's text.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-custom-text-block-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    display: block;
+  }
+
+  .ai-custom-text-block__content-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size }}px;
+    color: {{ block.settings.text_color }};
+    text-align: {{ block.settings.text_alignment }};
+    line-height: 1.5;
+  }
+
+  .ai-custom-text-block__content-{{ ai_gen_id }} p {
+    margin: 0 0 1em 0;
+  }
+
+  .ai-custom-text-block__content-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-custom-text-block__content-{{ ai_gen_id }} h1,
+  .ai-custom-text-block__content-{{ ai_gen_id }} h2,
+  .ai-custom-text-block__content-{{ ai_gen_id }} h3,
+  .ai-custom-text-block__content-{{ ai_gen_id }} h4,
+  .ai-custom-text-block__content-{{ ai_gen_id }} h5,
+  .ai-custom-text-block__content-{{ ai_gen_id }} h6 {
+    margin: 0 0 0.5em 0;
+  }
+
+  .ai-custom-text-block__content-{{ ai_gen_id }} ul,
+  .ai-custom-text-block__content-{{ ai_gen_id }} ol {
+    margin: 0 0 1em 0;
+    padding-left: 1.5em;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-custom-text-block__content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.mobile_font_size }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-custom-text-block-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.text_content != blank %}
+    <div class="ai-custom-text-block__content-{{ ai_gen_id }}">
+      {{ block.settings.text_content }}
+    </div>
+  {% else %}
+    <div class="ai-custom-text-block__content-{{ ai_gen_id }}" style="color: #999; font-style: italic;">
+      Add your text content here
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Custom text block",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "text_content",
+      "label": "Text",
+      "default": "<p>Add your custom text here. You can format it with bold, italic, and more.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Desktop font size",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "label": "Mobile font size",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom text block"
+    }
+  ]
+}
+{% endschema %}

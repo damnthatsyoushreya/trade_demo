@@ -1,0 +1,240 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner": {
+      "type": "image-banner",
+      "blocks": {
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "Welcome industry insiders",
+            "text_style": "caption-with-letter-spacing"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Grow your business with us",
+            "heading_size": "h1"
+          }
+        },
+        "button": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Shop all",
+            "button_link_1": "shopify://collections/all",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "text",
+        "heading",
+        "button"
+      ],
+      "settings": {
+        "image_overlay_opacity": 40,
+        "image_height": "small",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
+        "color_scheme": "scheme-5",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
+      }
+    },
+    "featured_product_Tbfywe": {
+      "type": "featured-product",
+      "blocks": {
+        "text_xABig4": {
+          "type": "text",
+          "settings": {
+            "text": "Volume Pricing",
+            "text_style": "body"
+          }
+        },
+        "text_wHN9fH": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_exT64k": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_89mDT8": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_k7PkQw": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_7E7VmJ": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_QW3tTc": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_7pnCMT": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_xABig4",
+        "text_wHN9fH",
+        "title_exT64k",
+        "price_89mDT8",
+        "variant_picker_k7PkQw",
+        "quantity_selector_7E7VmJ",
+        "buy_buttons_QW3tTc",
+        "share_7pnCMT"
+      ],
+      "custom_css": [
+        ".product__info-container .product__text.inline-richtext:first-child {font-size: 30px; font-weight: 700;}"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "fuel-offroad-assault",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_8iLa78": {
+      "type": "featured-product",
+      "blocks": {
+        "text_yaWENt": {
+          "type": "text",
+          "settings": {
+            "text": "Quick Order List",
+            "text_style": "body"
+          }
+        },
+        "text_miQN6d": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_d6iqGh": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "price_URYf6q": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_6Fb8cc": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_NgDHLY": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_DpGhnQ": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_kHFApH": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_yaWENt",
+        "text_miQN6d",
+        "title_d6iqGh",
+        "price_URYf6q",
+        "variant_picker_6Fb8cc",
+        "quantity_selector_NgDHLY",
+        "buy_buttons_DpGhnQ",
+        "share_kHFApH"
+      ],
+      "custom_css": [
+        ".product__info-container .product__text.inline-richtext:first-child {font-size: 30px; font-weight: 700;}"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "black-rhino-element",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "quick_order_list": {
+      "type": "quick-order-list",
+      "settings": {
+        "product": "fuel-offroad-assault",
+        "variants_per_page": 50,
+        "show_image": true,
+        "show_sku": true,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "image_banner",
+    "featured_product_Tbfywe",
+    "featured_product_8iLa78",
+    "quick_order_list"
+  ]
+}
