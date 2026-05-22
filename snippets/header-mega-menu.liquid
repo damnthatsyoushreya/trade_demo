@@ -275,12 +275,16 @@
 
 <script>
   (function () {
-    const items     = document.querySelectorAll('[data-mega-item]');
-    const backdrop  = document.getElementById('MegaMenuBackdrop');
-    let   openItem  = null;
+    const items    = document.querySelectorAll('[data-mega-item]');
+    const backdrop = document.getElementById('MegaMenuBackdrop');
+    let openItem   = null;
+    let closeTimer = null;
 
     function openPanel(item) {
-      if (openItem && openItem !== item) closePanel(openItem);
+      clearTimeout(closeTimer);
+      if (openItem && openItem !== item) {
+        forceClose(openItem);
+      }
       const btn   = item.querySelector('[data-mega-trigger]');
       const panel = item.querySelector('.mega-menu__panel');
       if (!btn || !panel) return;
@@ -291,45 +295,46 @@
       openItem = item;
     }
 
-    function closePanel(item) {
+    function forceClose(item) {
       if (!item) return;
       const btn   = item.querySelector('[data-mega-trigger]');
       const panel = item.querySelector('.mega-menu__panel');
       item.classList.remove('is-open');
-      if (panel)  panel.classList.remove('is-open');
-      if (btn)    btn.setAttribute('aria-expanded', 'false');
+      if (panel) panel.classList.remove('is-open');
+      if (btn)   btn.setAttribute('aria-expanded', 'false');
       backdrop.classList.remove('is-open');
-      openItem = null;
+      if (openItem === item) openItem = null;
+    }
+
+    function scheduleClose(item) {
+      closeTimer = setTimeout(function () {
+        forceClose(item);
+      }, 120);
     }
 
     items.forEach(function (item) {
       const btn = item.querySelector('[data-mega-trigger]');
-      if (!btn) return;
 
-      /* Click toggle */
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        item.classList.contains('is-open') ? closePanel(item) : openPanel(item);
+      item.addEventListener('mouseenter', function () {
+        openPanel(item);
       });
 
-      /* Hover open */
-      item.addEventListener('mouseenter', function () { openPanel(item); });
-      item.addEventListener('mouseleave', function () { closePanel(item); });
+      item.addEventListener('mouseleave', function () {
+        scheduleClose(item);
+      });
 
       /* Keyboard: Escape */
-      item.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') { closePanel(item); btn.focus(); }
-      });
+      if (btn) {
+        btn.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') { forceClose(item); btn.focus(); }
+        });
+      }
     });
 
     /* Backdrop click → close */
     backdrop.addEventListener('click', function () {
-      if (openItem) closePanel(openItem);
+      if (openItem) forceClose(openItem);
     });
 
-    /* Click outside → close */
-    document.addEventListener('click', function () {
-      if (openItem) closePanel(openItem);
-    });
   })();
 </script>
